@@ -45,6 +45,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ProductList(
+    // first panel for the list of products
     products: List<Product>,
     modifier: Modifier = Modifier,
     onProductSelected: (Product) -> Unit
@@ -65,14 +66,15 @@ fun ProductList(
 @Composable
 fun ProductDetails(product: Product?, modifier: Modifier = Modifier, onClearSelection: () -> Unit) {
     Column(
+        // second panel for the details of the selected product
         modifier = modifier
             .padding(16.dp)
             .clickable { onClearSelection() }
     ) {
         if (product == null) {
-            Text(text = "Select a product to see more information")
+            Text(text = "Select a product to see more information") // default message
         } else {
-            Text(text = product.name, style = MaterialTheme.typography.bodySmall)
+            Text(text = product.name, style = MaterialTheme.typography.bodyMedium)
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = product.description)
             Spacer(modifier = Modifier.height(8.dp))
@@ -83,8 +85,8 @@ fun ProductDetails(product: Product?, modifier: Modifier = Modifier, onClearSele
                 modifier = Modifier
                     .clickable{ onClearSelection() }
                     .padding(8.dp),
-                style = MaterialTheme.typography.bodySmall
-            )
+                style = MaterialTheme.typography.bodyMedium
+            ) // return button
 
         }
     }
@@ -95,9 +97,10 @@ fun ShoppingApp(products: List<Product>) {
 //    var selectedProduct by rememberSaveable { mutableStateOf<Product?>(null) }
     var selectIndex by rememberSaveable { mutableStateOf(-1) }
 //    var portrait by remember { mutableStateOf(true) }
-    val config = LocalConfiguration.current
-    val portrait = config.orientation == Configuration.ORIENTATION_PORTRAIT
+    val config = LocalConfiguration.current // get the current state
+    val portrait = config.orientation == Configuration.ORIENTATION_PORTRAIT // check if it is portrait mode
 
+    // portrait mode
     if (portrait) {
         if (selectIndex == -1) {
             ProductList(products) { product ->
@@ -109,6 +112,7 @@ fun ShoppingApp(products: List<Product>) {
             }
         }
     } else {
+        // landscape mode
         Row {
             ProductList(
                 products,
